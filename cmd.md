@@ -1,2 +1,2 @@
-**$terraform init**
-**$terraform test**
+        $terraform init
+        $terraform test

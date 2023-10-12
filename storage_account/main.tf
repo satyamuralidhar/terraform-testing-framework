@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    azurerm = {
+      version = "~>3.0.0"
+      source  = "hashicorp/azurerm"
+    }
+  }
+}
+
 resource "azurerm_storage_account" "ast" {
   name                     = var.resource_name
   location                 = var.location
