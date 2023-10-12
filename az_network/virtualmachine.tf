@@ -6,7 +6,6 @@ resource "azurerm_virtual_machine" "avm" {
   resource_group_name = azurerm_resource_group.rsg.name
   network_interface_ids = [azurerm_network_interface.nic.id]
   vm_size               = var.vm_size #"Standard_D1s_v4"
-
   tags = local.tags
 
   storage_image_reference {

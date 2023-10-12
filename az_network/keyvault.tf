@@ -9,8 +9,7 @@ resource "azurerm_key_vault" "kv" {
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
-
-  sku_name = "standard"
+  sku_name = var.kv_sku_name #"standard"
   tags = local.tags
 
 }
@@ -22,59 +21,12 @@ resource "azurerm_key_vault_access_policy" "kvp" {
   key_vault_id = azurerm_key_vault.kv.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_client_config.current.object_id
+  key_permissions = var.key_permissions
+  secret_permissions = length(var.secret_permissions) !=null ? var.secret_permissions : []
+  storage_permissions = length(var.storage_permissions)  !=null ? var.storage_permissions : []
+  certificate_permissions = length(var.certificate_permissions) !=null ? var.certificate_permissions : []
 
-  dynamic "key_permissions" {
-    for_each = var.key_permissions
-    iterator = "permissions"
-    content {
-      key_permissions = permissions.key_permissions
-    }
-  }
-  
-  dynamic "key_permissions" {
-    for_each = length(var.key_permissions) !="" ? var.key_permissions : ""
-    iterator = "permissions"
-    content {
-      key_permissions = permissions.key_permissions
-    }
-  }
 
-  dynamic "secret_permissions" {
-    for_each = length(var.secret_permissions) !="" ? var.secret_permissions : ""
-    iterator = "permissions"
-    content {
-      key_permissions = permissions.secret_permissions
-    }
-  }
-
-  dynamic "storage_permissions" {
-    for_each = length(var.storage_permissions)  !="" ? var.storage_permissions : ""
-    iterator = "permissions"
-    content {
-      key_permissions = permissions.storage_permissions
-    }
-  }
-
-  dynamic "certificate_permissions" {
-    for_each = length(var.certificate_permissions) !="" ? var.certificate_permissions : ""
-    iterator = "permissions"
-    content {
-      key_permissions = permissions.certificate_permissions
-    }
-  }
-
-  
-
-/*
-Backup, Create, Decrypt, Delete, Encrypt, Get, Import, List, Purge, Recover, Restore, Sign, UnwrapKey, Update, Verify,
-*/
-  # key_permissions = [
-  #   "Get","Delete","Decrypt","Get","Import","List","Recover","Restore","Update","Verify"
-  # ]
-
-  # secret_permissions = [
-  #   "Get",
-  # ]
 }
 
 resource "tls_private_key" "rsa" {

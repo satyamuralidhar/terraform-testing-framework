@@ -5,16 +5,20 @@ resource_group_name  = "app"
 address_space        = ["192.168.0.0/16"]
 subnet_name          = "subnet"
 subnet_prefix_count = [1,2]
-public_ip_name = ""
-network_interface_name = ""
+public_ip_name = "pip-nic"
+network_interface_name = "app-nic"
+network_security_group_name = "app-nsg"
 vm_size = "Standard_D1s_v4"
 
 //keyvault
-key_permissions = ["Get","Delete","Decrypt","Get","Import","List","Recover","Restore","Update","Verify"]
+key_permissions = ["Get","Delete","Decrypt","Import","List","Recover","Restore","Update","Verify"]
 secret_permissions = ["Backup","Delete","Get", "List","Purge","Recover","Restore","Set"]
 storage_permissions = ["Backup","Delete","Get", "List", "Purge", "Recover","Restore", "Set","Update"]
 certificate_permissions = ["Backup","Create","Delete","Get","Import", "List", "Purge", "Recover", "Restore","Update"]
 ssh_secret_name = "appkey"
+kv_sku_name = "standard"
+key_vault_name = "app-kv01"
+  
 
 //vm
 admin_username = "murali"
